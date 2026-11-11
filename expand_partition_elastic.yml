@@ -1,0 +1,53 @@
+
+---
+- name: Expand RHEL system LVM
+  hosts: elastic
+  become: true
+  gather_facts: true
+
+  vars:
+    disk_device: /dev/sda
+    lvm_partition: 3
+    pv_device: /dev/sda3
+    vg_name: system
+    lv_name: var_log
+    lv_extension: +500G
+
+  tasks:
+
+    - name: Install growpart utility
+      ansible.builtin.package:
+        name: cloud-utils-growpart
+        state: present
+
+    - name: Expand LVM partition
+      ansible.builtin.command:
+        cmd: "growpart {{ disk_device }} {{ lvm_partition }}"
+      register: growpart_result
+      changed_when: "'CHANGED:' in growpart_result.stdout"
+
+    - name: Resize LVM physical volume
+      ansible.builtin.command:
+        cmd: "pvresize {{ pv_device }}"
+      register: pvresize_result
+      changed_when: "'1 physical volume(s) resized' in pvresize_result.stdout"
+
+    - name: Extend var_log logical volume by 500GB
+      community.general.lvol:
+        vg: "{{ vg_name }}"
+        lv: "{{ lv_name }}"
+        size: "{{ lv_extension }}"
+        resizefs: true
+        shrink: false
+        state: present
+
+    - name: Display final LVM configuration
+      ansible.builtin.command:
+        cmd: "lvs -o vg_name,lv_name,lv_size"
+      register: lvm_status
+      changed_when: false
+
+    - name: Show LVM status
+      ansible.builtin.debug:
+        var: lvm_status.stdout_lines
+
