@@ -11,7 +11,7 @@
     pv_device: /dev/sda3
     vg_name: system
     lv_name: var_log
-    lv_target_size_gb: 56
+    lv_target_size_gb: 86
 
   tasks:
 
