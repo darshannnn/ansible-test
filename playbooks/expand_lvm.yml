@@ -1,0 +1,38 @@
+
+---
+- name: Expand RHEL system LVM
+  hosts: elastic
+  become: true
+  gather_facts: false
+
+  tasks:
+
+    - name: Get current logical volume sizes
+      ansible.builtin.command:
+        cmd: "lvs --noheadings --units b --nosuffix -o lv_size /dev/{{ vg_name }}/{{ item.name }}"
+      loop: "{{ lvm_volumes }}"
+      register: current_lv_sizes
+      changed_when: false
+
+    - name: Expand logical volumes
+      ansible.builtin.include_tasks: expand_volume.yml
+      loop: "{{ lvm_volumes }}"
+      loop_control:
+        loop_var: volume
+        label: "{{ volume.name }}"
+      vars:
+        current_lv_size_bytes: "{{ current_lv_sizes.results[ansible_loop.index0].stdout | trim | float }}"
+      loop_control:
+        extended: true
+        loop_var: volume
+        label: "{{ volume.name }}"
+
+    - name: Display final LVM configuration
+      ansible.builtin.command:
+        cmd: "lvs -o vg_name,lv_name,lv_size"
+      register: lvm_status
+      changed_when: false
+
+    - name: Show LVM status
+      ansible.builtin.debug:
+        var: lvm_status.stdout_lines

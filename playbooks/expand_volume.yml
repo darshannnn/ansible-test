@@ -1,0 +1,66 @@
+
+---
+- name: Check whether {{ volume.name }} needs expansion
+  ansible.builtin.set_fact:
+    volume_needs_expansion: >-
+      {{ (current_lv_size_bytes | float) <
+         (volume.target_size_gb | int * 1024**3) }}
+
+- name: Check available VG space
+  ansible.builtin.command:
+    cmd: "vgs --noheadings --units b --nosuffix -o vg_free {{ vg_name }}"
+  register: vg_free_space
+  changed_when: false
+  when: volume_needs_expansion | bool
+
+- name: Expand partition and PV if VG space is insufficient
+  when:
+    - volume_needs_expansion | bool
+    - (vg_free_space.stdout | trim | float) <
+      ((volume.target_size_gb | int * 1024**3) - (current_lv_size_bytes | float))
+  block:
+
+    - name: Install growpart utility
+      ansible.builtin.package:
+        name: cloud-utils-growpart
+        state: present
+
+    - name: Expand LVM partition
+      ansible.builtin.command:
+        cmd: "growpart {{ disk_device }} {{ lvm_partition }}"
+      register: growpart_result
+      changed_when: "'CHANGED:' in growpart_result.stdout"
+      failed_when:
+        - growpart_result.rc != 0
+        - "'NOCHANGE:' not in growpart_result.stdout"
+
+    - name: Resize LVM physical volume
+      ansible.builtin.command:
+        cmd: "pvresize {{ pv_device }}"
+      register: pvresize_result
+      changed_when: "'1 physical volume(s) resized' in pvresize_result.stdout"
+
+- name: Recheck available VG space
+  ansible.builtin.command:
+    cmd: "vgs --noheadings --units b --nosuffix -o vg_free {{ vg_name }}"
+  register: final_vg_free_space
+  changed_when: false
+  when: volume_needs_expansion | bool
+
+- name: Ensure sufficient VG space is available
+  ansible.builtin.assert:
+    that:
+      - (final_vg_free_space.stdout | trim | float) >=
+        ((volume.target_size_gb | int * 1024**3) - (current_lv_size_bytes | float))
+    fail_msg: "Insufficient free space in VG {{ vg_name }} to extend {{ volume.name }}."
+  when: volume_needs_expansion | bool
+
+- name: Extend logical volume {{ volume.name }}
+  community.general.lvol:
+    vg: "{{ vg_name }}"
+    lv: "{{ volume.name }}"
+    size: "{{ volume.target_size_gb }}G"
+    resizefs: true
+    shrink: false
+    state: present
+  when: volume_needs_expansion | bool

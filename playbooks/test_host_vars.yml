@@ -1,0 +1,6 @@
+- name: Test Host Vars
+  hosts: elastic
+  tasks:
+    - name: These are the disk device and lvm partition
+      debug:
+        msg: "{{ disk_device }} and {{ lvm_partition }}""
