@@ -7,3 +7,9 @@ vg_name: system
 lvm_volumes:
   - name: var_log
     target_size_gb: 86
+
+  - name: var
+    target_size_gb: 40
+
+  - name: opt
+    target_size_gb: 30
