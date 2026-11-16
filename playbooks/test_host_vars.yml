@@ -1,6 +1,17 @@
+---
 - name: Test Host Vars
   hosts: elastic
+  gather_facts: false
+
   tasks:
-    - name: These are the disk device and lvm partition
-      debug:
-        msg: "{{ disk_device }} and {{ lvm_partition }}"
+    - name: Display inventory hostname
+      ansible.builtin.debug:
+        var: inventory_hostname
+
+    - name: Display all host variables
+      ansible.builtin.debug:
+        var: hostvars[inventory_hostname]
+
+    - name: Test LVM variables
+      ansible.builtin.debug:
+        msg: "Disk: {{ disk_device | default('UNDEFINED') }}, Partition: {{ lvm_partition | default('UNDEFINED') }}"
