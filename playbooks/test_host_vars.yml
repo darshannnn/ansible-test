@@ -15,3 +15,7 @@
     - name: Test LVM variables
       ansible.builtin.debug:
         msg: "Disk: {{ disk_device | default('UNDEFINED') }}, Partition: {{ lvm_partition | default('UNDEFINED') }}, Sudoers: {{ sudoers_host | default('UNDEFINED') }}, Satellite: {{ satellite_org | default('UNDEFINED') }}"
+
+    - name: Display sudoers
+      ansible.builtin.debug:
+        var: sudoers_host
