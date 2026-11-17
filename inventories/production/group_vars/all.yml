@@ -6,32 +6,3 @@ firewall_rules:
     state: enabled
     permanent: true
     zone: public
-
-
-users:
-  - name: u4729733
-    state: present
-    ssh_public_key:
-      "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDHzd1LxGIXntdbuLWs3LdFFP3bFY/OkD0VniAKSTSaEp213eUP6EnQF6n5SppCieMkAvuUQ7vc7zSyyW2V8s6\
-      +rRdVxuEmgn/uLDlOyHm1yfdexPYIPV1OyJ1JxyRv22Ky38GT+XW/jdaushVoo8ZvppY4YRwtq1gIc88/yWJ1Pevz3dkMZVqjP5fs5hj09iAYGvb6F+2TfO2qQ+TqXLMn3+RAIrSo7xtVj\
-      4+/IMdxiB4t/UYvS8A2r/2+lkqnJXWP9tU69yqkVdr0Iwwiga+lgZH8bmc7Fw4UP7tjE+esrTeJCjKWcSatyC3HE1cHbPrfPOJvjwUazc7Ps4RBn9cOd64Hyh5nasCMl1WW6lSAdQ1qiaF\
-      MZ8V1awcMAjdL9uIDo/2BODJLbj2tHoORKQKgYPxpgkvBX/NbjzoDgsQDoYcPeMQWKgXBLWUViMrLkTxCeG3rRE4qDJDszfFJPgxcQVOSdQ9l8lYT9P9Tp/80NL4/SUoKI3dv9FCcmmSK2\
-      aBbR4MP4HgAzprH1JqX/WtaHzG8byVezuIiCyWsP/odJgsxHQpq8SgwvyRwAs+nKa+UGRhS0tDU2jca3UtzYDcBAofY3Lbgb/gVhnauYsgIIGgdTAPMlAPLcUJpzqbpEFSAON8vlVJYZYqp\
-      or/Osr66TYM8i9pDte1ErGuht8cgVw== u4729733@its-064585"
-    sudoers: present
-  - name: u5318579
-    state: present
-    sudoers: present
-    ssh_public_key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDulXbVAy98j19ifcSIPhgUG2todtvpF6poxKvtXtjB7UoxOD4+12y4IhS9r005wgO7nRW25qY\
-      qcJpx8HcAMQ9DCduvbaHxmbw8Q1SR3a0tY9HZqw93aqovqn+Qeq64qu5Td7CTReuo3rjL9pTVmzNzAZRAhi6JX/B+hrITqueSI0sxCSB8wUwpU1E+KKB9cLqRkpI/d1\
-      9tbuGPkwx07LH3cmMbFK2G6gRTZvlOZq3ARfwV5a0+w17FfVZFUw11/oiSIyx9Subm89nZ2G6SG3CdUmKVXTyvYzUyQz370gqhwy4Al8f7nfaNngkk+lOAs3JK8v2to\
-      qB2Lhdsm8AmQtO6seueq+r1olXZ3O9rAb1a9D9BQzgPES0nMfF+TmbkK8f7JlVK8+nHEAzs7KNaPoxDjM4Pj3+6YGgagTWgMhBQIsNuq1NVtChdkZMLBD5FQRu2APHc\
-      5yM/W68TxZwzeACrXL6X4lTC09aGyFGWAMqR0+UQTn+T6Cov/YRTJizvU3c= user6731@bb2038.local"
-  - name: iso-orchestration
-    state: present
-    sudoers: present
-    ssh_public_key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDmWnieGkl4gt96xZEAYAKaPyruK/IrsYwmRWn2WH10uoL6e02Z0t0Pv/+dr4LDtDoACa/KV1vVj3\
-      ouUts6XMAippaBHlqiyg0A1UlUolV7y0QmBPsv+qJw6iAbfGdiokOfZmWdbESwAF34ntXHAqJ8f+McAUsZk79c+qPYj9LPOhrLDhdHfjH6oL6+EVD8l8JZ5q6rgztUi8\
-      uvmstIMGjaKnCZRxDmatm2g7FmtyCIvDQprzfiALeCqA0BPQtcT0ufr5qLjWloqb9Vmn+4hr4kZRgTO1LLNcdWBHdzxcOov/I8E9rqPBx7eYwCORaZCw2B/up25IlMj5\
-      hwyUoNuxrciFsUlYSe6mDmNfN7+H71UG/vxG9S7gC9I+3CJ9KkSLPgDSjIuzEJWZnTO8JqdwCqicZ2TpGG55XWDyZYgogjoL1pHzsS7PtjXDkA2CT+F9rRUF17yx7jCPy\
-      BFYIDE8PlLn0m6IQX72rCsKnoQNswqcXywp6Wi6m4MvvDE6QqlgM= foreman-proxy@buri.anu.edu.au"
