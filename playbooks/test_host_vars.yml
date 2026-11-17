@@ -19,3 +19,7 @@
     - name: Display sudoers
       ansible.builtin.debug:
         var: sudoers_host
+
+    - name: All host firewall var
+      ansible.builtin.debug:
+        var: firewall_rules
