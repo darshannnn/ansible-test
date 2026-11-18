@@ -1,0 +1,12 @@
+---
+disk_device: /dev/sda
+lvm_partition: 2
+pv_device: /dev/sda3
+vg_name: system
+
+lvm_volumes:
+  - name: var_log
+    target_size_gb: 86
+
+  - name: var
+    target_size_gb: 40
